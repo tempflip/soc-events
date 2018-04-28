@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Attendee__c</members>
+        <members>Event__c</members>
+        <members>Session_Registration__c</members>
+        <members>Session__c</members>
+        <members>Track_Session__c</members>
+        <members>Track__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Attendee__c-Attendee Layout</members>
+        <members>Event__c-Event Layout</members>
+        <members>Session_Registration__c-Session Registration Layout</members>
+        <members>Session__c-Session Layout</members>
+        <members>Track_Session__c-Track Session Layout</members>
+        <members>Track__c-Track Layout</members>
+        <name>Layout</name>
+    </types>
+    <version>40.0</version>
+</Package>
