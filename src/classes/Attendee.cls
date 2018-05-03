@@ -29,7 +29,10 @@ public with sharing class Attendee {
 	public void validateSessionRegistration(Session sess) {
 		if (ifSessionAlreadyRegistered(sess) == true) {
 			throw new AttendeeException('This user already registered for the session.');
-		}	
+		}
+		if (ifSessionOverlaps(sess) == true) {
+			throw new AttendeeException('This session overlaps with another');
+		}			
 	}
 
 	public Boolean ifSessionAlreadyRegistered(Session sess) {
@@ -40,7 +43,14 @@ public with sharing class Attendee {
 	}
 
 	public Boolean ifSessionOverlaps(Session sess) {
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			if (	(sess.startTime < sr.sessionStart && sess.endTime > sr.sessionStart) 
+				|| (sess.startTime < sr.sessionEnd && sess.endTime > sr.sessionEnd)
+			) 
+			{
+				return true;
+			}
+		}
 		return false;
-
 	}	
 }
