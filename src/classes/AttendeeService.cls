@@ -1,5 +1,10 @@
 public with sharing class AttendeeService {
 
+	/*
+	* Registers Attendees to a list of Sessions
+	* Params:
+	* Session Id lists mapped to Attendee id's
+	*/
 	public static void registerAttendeeForSession(Map<Id, Id[]> sessionsByAttendee) {
 		Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(sessionsByAttendee.keySet());
 		Set<Id> sessionIdSet = new Set<Id>();
@@ -15,15 +20,25 @@ public with sharing class AttendeeService {
 
 		Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
 
+		// uow = new SObjectUnitOfWork(...)
+
 		for (Attendee__c attRecord : attList) {
 			Attendee att = new Attendee(attRecord);
+			// att.uow = uow;
 			for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
 				Session sess = new Session(sessionMap.get(sessionId));
 				att.registerForSession(sess);
 			}
+			att.upsertSessionRegistrationRecords();
 		}
+
+		//uow.commitWork();
 	}
 
+	/*
+	* Validates if a Session Registration record is valid.
+	* Call on before insert and on before update
+	*/
 	public static void validateSessionRegistration(Session_Registration__c[] srList) {
 		Set<Id> attIdSet = new Set<Id>();
 		Set<Id> sessIdSet = new Set<Id>();

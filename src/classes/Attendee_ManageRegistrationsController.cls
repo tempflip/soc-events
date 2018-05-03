@@ -6,4 +6,13 @@ public with sharing class Attendee_ManageRegistrationsController {
 		Attendee att = new Attendee(a);
 		return att;
 	}
+
+	@AuraEnabled
+	public static void registerAttendeeForSession(Id attendeeId
+												, Id sessionId) {
+		AttendeeService.registerAttendeeForSession(new Map<Id, Id[]>
+												{
+													attendeeId => new Id[]{sessionId}
+												});
+	}
 }

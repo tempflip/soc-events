@@ -53,4 +53,8 @@ public with sharing class Attendee {
 		}
 		return false;
 	}	
+
+	public void upsertSessionRegistrationRecords() {
+		
+	}
 }
