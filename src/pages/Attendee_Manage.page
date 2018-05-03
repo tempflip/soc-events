@@ -1,0 +1,23 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" >
+    <apex:includeLightning />
+
+    <div id="lDiv" />
+    
+
+    <script>
+       
+        var recordId = '{!$Currentpage.parameters.id}';
+
+        $Lightning.use("c:Attendee_Manage", function() {
+          $Lightning.createComponent("c:Attendee_ManageRegistrations",
+          { 'recordId' : recordId },
+          "lDiv",
+          function(cmp) {
+            // do some stuff
+          });
+        });
+
+
+    </script>
+    
+</apex:page>

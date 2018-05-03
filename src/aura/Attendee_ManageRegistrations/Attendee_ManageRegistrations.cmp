@@ -1,0 +1,19 @@
+<aura:component
+	implements="force:appHostable,flexipage:availableForAllPageTypes"
+	controller="Attendee_ManageRegistrationsController">
+
+	<aura:attribute name="recordId" type="String"/>
+	<aura:attribute name="sObjectName" type="String"/>
+	<aura:attribute name="attendee" type="Object" access="private" />
+
+	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+	
+	First Name : {!v.attendee.firstName} <br/>
+	Last Name : {!v.attendee.lastName} <br/>
+
+	<aura:iteration items="{!v.attendee.sessionRegistrationList}" var="sr">
+
+		<c:SessionRegistrationCard session="{!sr}" />
+	
+	</aura:iteration>
+</aura:component>
