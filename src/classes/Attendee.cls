@@ -1,5 +1,7 @@
 public with sharing class Attendee {
 
+	public class AttendeeException extends Exception {}
+
 	public Attendee__c record;
 	@AuraEnabled public SessionRegistration[] sessionRegistrationList;
 	@AuraEnabled public String firstName;
@@ -19,4 +21,26 @@ public with sharing class Attendee {
 			this.sessionRegistrationList.add(new SessionRegistration(sr));
 		}
 	}
+
+	public void registerForSession(Session sess) {
+		this.validateSessionRegistration(sess);
+	}
+
+	public void validateSessionRegistration(Session sess) {
+		if (ifSessionAlreadyRegistered(sess) == true) {
+			throw new AttendeeException('This user already registered for the session.');
+		}	
+	}
+
+	public Boolean ifSessionAlreadyRegistered(Session sess) {
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			if (sr.record.Session__c == sess.record.Id) return true;
+		}
+		return false;
+	}
+
+	public Boolean ifSessionOverlaps(Session sess) {
+		return false;
+
+	}	
 }

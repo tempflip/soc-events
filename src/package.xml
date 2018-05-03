@@ -29,11 +29,17 @@
 		<members>Session</members>
 		<members>SessionRegistration</members>
 		<members>AttendeeSelector</members>
+		<members>AttendeeService</members>
+		<members>SessionSelector</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
 		<members>Attendee_Manage</members>
 		<name>ApexPage</name>
+	</types>
+	<types>
+		<members>SessionRegistration</members>
+		<name>ApexTrigger</name>
 	</types>
 	<version>36.0</version>
 </Package>

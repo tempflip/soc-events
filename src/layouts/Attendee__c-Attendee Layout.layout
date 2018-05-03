@@ -59,6 +59,8 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Session__c.NAME</fields>
+        <fields>Session__c.Start__c</fields>
+        <fields>Session__c.End__c</fields>
         <relatedList>Session_Registration__c.Attendee__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
