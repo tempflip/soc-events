@@ -1,45 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-	<types>
-		<members>Attendee__c</members>
-		<members>Event__c</members>
-		<members>Session_Registration__c</members>
-		<members>Session__c</members>
-		<members>Track_Session__c</members>
-		<members>Track__c</members>
-		<name>CustomObject</name>
-	</types>
-	<types>
-		<members>Attendee__c-Attendee Layout</members>
-		<members>Event__c-Event Layout</members>
-		<members>Session_Registration__c-Session Registration Layout</members>
-		<members>Session__c-Session Layout</members>
-		<members>Track_Session__c-Track Session Layout</members>
-		<members>Track__c-Track Layout</members>
-		<name>Layout</name>
-	</types>
-	<types>
-		<members>SessionRegistrationCard</members>
-		<members>Attendee_Manage</members>
-		<name>AuraDefinitionBundle</name>
-	</types>
-	<types>
-		<members>Attendee_ManageRegistrationsController</members>
-		<members>Attendee</members>
-		<members>Session</members>
-		<members>SessionRegistration</members>
-		<members>AttendeeSelector</members>
-		<members>AttendeeService</members>
-		<members>SessionSelector</members>
-		<name>ApexClass</name>
-	</types>
-	<types>
-		<members>Attendee_Manage</members>
-		<name>ApexPage</name>
-	</types>
-	<types>
-		<members>SessionRegistration</members>
-		<name>ApexTrigger</name>
-	</types>
-	<version>36.0</version>
+    <fullName>soc-events</fullName>
+    <types>
+        <members>Attendee</members>
+        <members>AttendeeSelector</members>
+        <members>AttendeeService</members>
+        <members>Attendee_ManageRegistrationsController</members>
+        <members>Session</members>
+        <members>SessionRegistration</members>
+        <members>SessionSelector</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Attendee_Manage</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>SessionRegistration</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Attendee_Manage</members>
+        <members>Attendee_ManageRegistrations</members>
+        <members>SessionRegistrationCard</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>Event_Management</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Attendee__c.Event__c</members>
+        <members>Attendee__c.First_Name__c</members>
+        <members>Attendee__c.Last_Name__c</members>
+        <members>Session_Registration__c.Attendee__c</members>
+        <members>Session_Registration__c.Session__c</members>
+        <members>Session__c.End__c</members>
+        <members>Session__c.Event__c</members>
+        <members>Session__c.Start__c</members>
+        <members>Track_Session__c.Session__c</members>
+        <members>Track_Session__c.Track__c</members>
+        <members>Track__c.Event__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Attendee__c</members>
+        <members>Event__c</members>
+        <members>Session_Registration__c</members>
+        <members>Session__c</members>
+        <members>Track_Session__c</members>
+        <members>Track__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Attendee__c</members>
+        <members>Event__c</members>
+        <members>Session__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Attendee__c-Attendee Layout</members>
+        <members>Event__c-Event Layout</members>
+        <members>Session_Registration__c-Session Registration Layout</members>
+        <members>Session__c-Session Layout</members>
+        <members>Track_Session__c-Track Session Layout</members>
+        <members>Track__c-Track Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Event__c.All</members>
+        <members>Session__c.All</members>
+        <name>ListView</name>
+    </types>
+    <version>41.0</version>
 </Package>
