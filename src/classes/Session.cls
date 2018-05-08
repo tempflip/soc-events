@@ -1,8 +1,8 @@
 public with sharing class Session {
-	public Session__c record;
-	public String name;
-	public DateTime startTime;
-	public DateTime endTime;
+	@AuraEnabled public Session__c record;
+	@AuraEnabled public String name;
+	@AuraEnabled public DateTime startTime;
+	@AuraEnabled public DateTime endTime;
 
 	public Session(Session__c sess) {
 		this.buildFromRecord(sess);

@@ -1,0 +1,16 @@
+<aura:component controller="Attendee_ManageRegistrationsController">
+	<aura:attribute name="sessions" type="object" access="private" />
+	<aura:attribute name="sessionId" type="Id" access="public" />
+
+	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+	<lightning:select label="Session" value="{!v.sessionId}">
+		<option value="" text="--Select a Session--"></option>
+
+		<aura:iteration items="{!v.sessions}" var="s">
+			<option value="{!s.record.Id}" text="{!s.name}"></option>
+		</aura:iteration>
+	
+	</lightning:select>
+
+</aura:component>
