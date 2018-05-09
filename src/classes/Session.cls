@@ -14,5 +14,4 @@ public with sharing class Session {
 		this.startTime = sess.Start__c;
 		this.endTime = sess.End__c;
 	}
-
 }

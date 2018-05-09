@@ -16,8 +16,32 @@
 		$A.enqueueAction(action);
 	},
 
+	registerToSession: function(cmp) {
+		var action = cmp.get('c.registerAttendeeToSession');
+
+		action.setParams({
+			'attendeeId' : cmp.get('v.recordId'),
+			'sessionId' : cmp.get('v.sessionId')
+		});
+
+		action.setCallback(this, function(res) {
+			if (res.getState() != 'SUCCESS') {
+				console.log('### error: ',res.getError());
+				return;
+			}
+			this.attendeeRegisteredSuccess(cmp);
+		});
+
+		$A.enqueueAction(action);
+	},
+
 	setAttendee : function(cmp, att) {
 		console.log(att);
 		cmp.set('v.attendee', att);
+	},
+
+	attendeeRegisteredSuccess : function(cmp) {
+		this.getAttendee(cmp);
 	}
+
 })

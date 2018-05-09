@@ -2,10 +2,12 @@ public with sharing class Attendee {
 
 	public class AttendeeException extends Exception {}
 
+	public SObjectUnitOfWork uow;
 	public Attendee__c record;
 	@AuraEnabled public SessionRegistration[] sessionRegistrationList;
 	@AuraEnabled public String firstName;
 	@AuraEnabled public String lastName;
+	@AuraEnabled public Id eventId;
 
 	public Attendee(Attendee__c att) {
 		this.buildFromRecord(att);
@@ -15,7 +17,8 @@ public with sharing class Attendee {
 		this.record = att;
 		this.firstName = att.First_Name__c;
 		this.lastName = att.Last_Name__c;
-
+		this.eventId = att.Event__c;
+		
 		this.sessionRegistrationList = new SessionRegistration[]{};
 		for (Session_Registration__c sr : att.Session_Registrations__r) {
 			this.sessionRegistrationList.add(new SessionRegistration(sr));
@@ -24,6 +27,7 @@ public with sharing class Attendee {
 
 	public void registerForSession(Session sess) {
 		this.validateSessionRegistration(sess);
+		this.sessionRegistrationList.add(new SessionRegistration(sess, this));
 	}
 
 	public void validateSessionRegistration(Session sess) {
@@ -55,6 +59,9 @@ public with sharing class Attendee {
 	}	
 
 	public void upsertSessionRegistrationRecords() {
-		
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			sr.uow = this.uow;
+			sr.upsertRecord();
+		}
 	}
 }

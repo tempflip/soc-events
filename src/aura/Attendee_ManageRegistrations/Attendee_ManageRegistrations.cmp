@@ -9,7 +9,13 @@
 
 	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
 	
-	<c:Session_Select sessionId="{!v.sessionId}"/>
+	<c:Session_Select sessionId="{!v.sessionId}"
+			eventId = "{!v.attendee.eventId}"
+		/>
+
+	<lightning:button variant="brand" label="Register" onclick="{!c.onRegisterClick}" />
+
+	<p/>
 
 	First Name : {!v.attendee.firstName} <br/>
 	Last Name : {!v.attendee.lastName} <br/>

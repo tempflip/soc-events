@@ -1,6 +1,9 @@
 ({
 	getSessions : function(cmp) {
 		var action = cmp.get('c.getSessions');
+		action.setParams({
+			'eventId' : cmp.get('v.eventId')
+		});
 
 		action.setCallback(this, function(res) {
 			if (res.getState() != 'SUCCESS') {

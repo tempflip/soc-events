@@ -8,8 +8,8 @@ public with sharing class Attendee_ManageRegistrationsController {
 	}
 
 	@AuraEnabled
-	public static Session[] getSessions() {
-		Session__c[] sl = SessionSelector.getSessionsByEvent(new Set<Id>{'a015C000001hDcG'});
+	public static Session[] getSessions(Id eventId) {
+		Session__c[] sl = SessionSelector.getSessionsByEvent(new Set<Id>{eventId});
 		Session[] sessionList = new Session[]{};
 		for (Session__c s : sl) {
 			sessionList.add(new Session(s));
@@ -18,13 +18,12 @@ public with sharing class Attendee_ManageRegistrationsController {
 	}
 
 	@AuraEnabled
-	public static void registerAttendeeForSession(Id attendeeId
+	public static void registerAttendeeToSession(Id attendeeId
 												, Id sessionId) {
 		AttendeeService.registerAttendeeForSession(new Map<Id, Id[]>
 												{
 													attendeeId => new Id[]{sessionId}
 												});
 	}
-
 
 }

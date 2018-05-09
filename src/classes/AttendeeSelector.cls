@@ -1,6 +1,7 @@
 public with sharing class AttendeeSelector {
 	public static Attendee__c[] getAttendeeWithSessionRegistrations(Set<Id> idSet) {
-		Attendee__c[] attL = [SELECT First_Name__c
+		Attendee__c[] attL = [SELECT Event__c
+									, First_Name__c
 									, Last_Name__c
 									, (SELECT Session__c
 											  , Session__r.Name

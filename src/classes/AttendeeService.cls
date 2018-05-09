@@ -20,11 +20,11 @@ public with sharing class AttendeeService {
 
 		Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
 
-		// uow = new SObjectUnitOfWork(...)
+		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});
 
 		for (Attendee__c attRecord : attList) {
 			Attendee att = new Attendee(attRecord);
-			// att.uow = uow;
+			att.uow = uow;
 			for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
 				Session sess = new Session(sessionMap.get(sessionId));
 				att.registerForSession(sess);
@@ -32,7 +32,7 @@ public with sharing class AttendeeService {
 			att.upsertSessionRegistrationRecords();
 		}
 
-		//uow.commitWork();
+		uow.commitWork();
 	}
 
 	/*
