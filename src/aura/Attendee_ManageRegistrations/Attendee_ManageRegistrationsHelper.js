@@ -26,7 +26,7 @@
 
 		action.setCallback(this, function(res) {
 			if (res.getState() != 'SUCCESS') {
-				console.log('### error: ',res.getError());
+				this.showError(cmp, res.getError()[0].message);
 				return;
 			}
 			this.setAttendee(cmp, res.getReturnValue());
@@ -46,7 +46,7 @@
 				console.log('### error: ',res.getError());
 				return;
 			}
-			
+
 			this.setAttendee(cmp, res.getReturnValue());
 		});
 
@@ -54,7 +54,14 @@
 	},
 
 
-	deleteRegistration : function(cmp, sessionRegistrationId) {
+	deleteRegistration : function(cmp, sessionRegistrationId, sessionId) {
+		var attendee = cmp.get('v.attendee');
+		attendee.sessionRegistrationList = attendee.sessionRegistrationList.filter(function(sr) {
+			return sr.sessionId != sessionId;
+		});
+
+		cmp.set('v.attendee', attendee);
+
 		// var action = cmp.get('c.deleteRegistration');
 
 		// action.setParams({
@@ -70,6 +77,10 @@
 		// });
 
 		// $A.enqueueAction(action);
+	},
+
+	showError : function(cmp, message) {
+		alert(message);
 	},
 
 	setAttendee : function(cmp, att) {

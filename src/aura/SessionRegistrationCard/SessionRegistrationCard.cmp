@@ -3,7 +3,6 @@
 	<aura:registerEvent name="registrationDelete" type="c:Attendee_Registration_DeleteEVT"/>
 
 	<lightning:card title="{!v.session.sessionName}" iconName="standard:account">
-		
 		<aura:if isTrue="{!v.session.recordId != null}">
 			I'm a saved record.
 			<aura:set attribute="else">

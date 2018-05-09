@@ -25,7 +25,12 @@ public with sharing class Attendee_ManageRegistrationsController {
 
 		Session__c sessRecord = SessionSelector.getSessionsById(new Set<Id>{sessionId})[0];
 		Session sess = new Session(sessRecord);
-		att.registerForSession(sess);
+
+		try {
+			att.registerForSession(sess);
+		} catch(Attendee.AttendeeException e) {
+			throw new AuraHandledException(e.getMessage());
+		}
 		return att;
 	}
 

@@ -9,7 +9,8 @@
 
 	onRegistrationDelete : function(cmp, event, helper) {
 		var sessionRegistrationId = event.getParam('sessionRegistrationId');
-		helper.deleteRegistration(cmp, sessionRegistrationId);
+		var sessionId = event.getParam('sessionId');
+		helper.deleteRegistration(cmp, sessionRegistrationId, sessionId);
 	},
 
 	onSaveClick	: function(cmp, event, helper) {

@@ -24,8 +24,6 @@
 	First Name : {!v.attendee.firstName} <br/>
 	Last Name : {!v.attendee.lastName} <br/>
 	
-	=------------ {!v.sessionId} ------------
-
 	<aura:iteration items="{!v.attendee.sessionRegistrationList}" var="sr">
 
 		<c:SessionRegistrationCard session="{!sr}" />
