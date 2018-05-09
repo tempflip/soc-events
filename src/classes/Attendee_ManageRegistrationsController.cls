@@ -36,17 +36,7 @@ public with sharing class Attendee_ManageRegistrationsController {
 
 	@AuraEnabled
 	public static Attendee saveAttendee(String attendeeJSON) {
-
-		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});		
-		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
-
-		att.uow = uow;
-		att.upsertSessionRegistrationRecords();
-		uow.commitWork();
-		
-		Session_Registration__c[] srToDelete = AttendeeService.diffSessionRegistrations(att, att.recordId);
-		delete srToDelete;
-
+		Attendee att = AttendeeService.saveAttendee(attendeeJSON);
 		return getAttendee(att.recordId);
 	}
 
