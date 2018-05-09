@@ -40,18 +40,14 @@ public with sharing class Attendee_ManageRegistrationsController {
 		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});		
 		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
 
-		//system.assert(false, att) ;	
-
 		att.uow = uow;
 		att.upsertSessionRegistrationRecords();
 		uow.commitWork();
 		
-		return getAttendee(att.recordId);
-	}
+		Session_Registration__c[] srToDelete = AttendeeService.diffSessionRegistrations(att, att.recordId);
+		delete srToDelete;
 
-	@AuraEnabled
-	public static void deleteRegistration(Id sessionRegistrationId) {
-		delete new Session_Registration__c(Id = sessionRegistrationId);
+		return getAttendee(att.recordId);
 	}
 
 }

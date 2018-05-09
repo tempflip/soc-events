@@ -5,35 +5,35 @@ public with sharing class AttendeeService {
 	* Params:
 	* Session Id lists mapped to Attendee id's
 	*/
-	public static void registerAttendeeForSession(Map<Id, Id[]> sessionsByAttendee) {
-		Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(sessionsByAttendee.keySet());
-		Set<Id> sessionIdSet = new Set<Id>();
+	//public static void registerAttendeeForSession(Map<Id, Id[]> sessionsByAttendee) {
+	//	Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(sessionsByAttendee.keySet());
+	//	Set<Id> sessionIdSet = new Set<Id>();
 
-		for (Attendee__c attRecord : attList) {
-			for (Session_Registration__c sr : attRecord.Session_Registrations__r) {
-				sessionIdSet.add(sr.Session__c);
-			}
-		}
-		for (Id attId : sessionsByAttendee.keySet()) {
-			sessionIdSet.addAll(sessionsByAttendee.get(attId));
-		}
+	//	for (Attendee__c attRecord : attList) {
+	//		for (Session_Registration__c sr : attRecord.Session_Registrations__r) {
+	//			sessionIdSet.add(sr.Session__c);
+	//		}
+	//	}
+	//	for (Id attId : sessionsByAttendee.keySet()) {
+	//		sessionIdSet.addAll(sessionsByAttendee.get(attId));
+	//	}
 
-		Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
+	//	Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
 
-		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});
+	//	SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});
 
-		for (Attendee__c attRecord : attList) {
-			Attendee att = new Attendee(attRecord);
-			att.uow = uow;
-			for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
-				Session sess = new Session(sessionMap.get(sessionId));
-				att.registerForSession(sess);
-			}
-			att.upsertSessionRegistrationRecords();
-		}
+	//	for (Attendee__c attRecord : attList) {
+	//		Attendee att = new Attendee(attRecord);
+	//		att.uow = uow;
+	//		for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
+	//			Session sess = new Session(sessionMap.get(sessionId));
+	//			att.registerForSession(sess);
+	//		}
+	//		att.upsertSessionRegistrationRecords();
+	//	}
 
-		uow.commitWork();
-	}
+	//	uow.commitWork();
+	//}
 
 	/*
 	* Validates if a Session Registration record is valid.
@@ -65,6 +65,30 @@ public with sharing class AttendeeService {
 				sr.addError(e.getMessage());
 			}
 		}
+	}
+	/*
+	* Returns the Session Registrations from the Database which you don't have on the passed Attendee
+	* Handy when you want to delete registrations
+	*/
+	public static Session_Registration__c[] diffSessionRegistrations(Attendee att, Id attId) {
+		Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(new Set<Id>{attId});
+		Attendee attInDatabase = new Attendee(attList[0]);
 
+		Session_Registration__c[] srNotExisting = new Session_Registration__c[]{};
+
+
+		for (SessionRegistration srDb : attInDatabase.sessionRegistrationList) {
+			Boolean found = false;
+			for (SessionRegistration srAtt : att.sessionRegistrationList) {
+				if (srDb.sessionId == srAtt.sessionId) found = true;
+			}
+
+			if (found == false) {
+				srNotExisting.add(srDb.record);
+			}
+		}
+
+
+		return srNotExisting;
 	}
 }
