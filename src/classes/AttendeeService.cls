@@ -77,11 +77,31 @@ public with sharing class AttendeeService {
 			}
 		}
 	}
+
+	/*
+	* Saves the passed Attendee in JSON form;
+	* Deletes the Session Registrations from the db which are not passed
+	*/
+	public static Attendee saveAttendee(String attendeeJSON) {
+
+		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});		
+		
+		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
+		att.uow = uow;
+		att.upsertSessionRegistrationRecords();
+		uow.commitWork();
+		
+		Session_Registration__c[] srToDelete = diffSessionRegistrations(att, att.recordId);
+		delete srToDelete;
+
+		return att;
+	}
+
 	/*
 	* Returns the Session Registrations from the Database which you don't have on the passed Attendee
 	* Handy when you want to delete registrations
 	*/
-	public static Session_Registration__c[] diffSessionRegistrations(Attendee att, Id attId) {
+	private static Session_Registration__c[] diffSessionRegistrations(Attendee att, Id attId) {
 		Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(new Set<Id>{attId});
 		Attendee attInDatabase = new Attendee(attList[0]);
 
@@ -102,18 +122,5 @@ public with sharing class AttendeeService {
 		return srNotExisting;
 	}
 
-	public static Attendee saveAttendee(String attendeeJSON) {
 
-		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});		
-		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
-
-		att.uow = uow;
-		att.upsertSessionRegistrationRecords();
-		uow.commitWork();
-		
-		Session_Registration__c[] srToDelete = AttendeeService.diffSessionRegistrations(att, att.recordId);
-		delete srToDelete;
-
-		return att;
-	}
 }
