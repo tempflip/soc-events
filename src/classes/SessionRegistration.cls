@@ -1,7 +1,7 @@
 public with sharing class SessionRegistration {
 	
 	public SObjectUnitOfWork uow;
-	public Session_Registration__c record;
+	@AuraEnabled public Session_Registration__c record;
 	@AuraEnabled public String sessionName;
 	@AuraEnabled public DateTime sessionStart;
 	@AuraEnabled public DateTime sessionEnd;
@@ -27,8 +27,8 @@ public with sharing class SessionRegistration {
 	public void upsertRecord() {
 		if (this.record == null) this.record = new Session_Registration__c();
 		
-		this.record.Attendee__c = this.att.record.Id;
-		this.record.Session__c = this.sess.record.Id;
+		if (this.att != null) this.record.Attendee__c = this.att.record.Id;
+		if (this.sess != null) this.record.Session__c = this.sess.record.Id;
 		this.uow.registerDirty(this.record);
 	}
 

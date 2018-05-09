@@ -32,10 +32,10 @@ public with sharing class Attendee {
 
 	public void validateSessionRegistration(Session sess) {
 		if (ifSessionAlreadyRegistered(sess) == true) {
-			throw new AttendeeException('This Attendee already registered for the Session.');
+			throw new AttendeeException('This Attendee already registered for the Session: ' + sess.name);
 		}
 		if (ifSessionOverlaps(sess) == true) {
-			throw new AttendeeException('This session overlaps with another.');
+			throw new AttendeeException('This session overlaps with another: ' + sess.name);
 		}			
 	}
 

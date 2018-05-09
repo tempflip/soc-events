@@ -22,6 +22,8 @@
 	</types>
 	<types>
 		<members>Session_Select</members>
+		<members>Attendee_Registration_Delete</members>
+		<members>Attendee_Registration_DeleteEVT</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<version>36.0</version>

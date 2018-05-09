@@ -26,4 +26,9 @@ public with sharing class Attendee_ManageRegistrationsController {
 												});
 	}
 
+	@AuraEnabled
+	public static void deleteRegistration(Id sessionRegistrationId) {
+		delete new Session_Registration__c(Id = sessionRegistrationId);
+	}
+
 }

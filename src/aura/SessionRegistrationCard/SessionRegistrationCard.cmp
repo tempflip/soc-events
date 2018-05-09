@@ -1,5 +1,6 @@
 <aura:component >
 	<aura:attribute name="session" type="Object" access="public" />
+	<aura:registerEvent name="registrationDelete" type="c:Attendee_Registration_DeleteEVT"/>
 
 	<lightning:card title="{!v.session.sessionName}" iconName="standard:account">
 		Start: 
@@ -11,6 +12,7 @@
 
 		<lightning:formattedDateTime value="{!v.session.sessionEnd}" year="numeric" month="numeric" day="numeric"  hour="2-digit" minute="2-digit" timeZoneName="short" />
 
+		<lightning:button label="Delete" onclick="{!c.onDeleteClick}" />
 
 	</lightning:card>
 
