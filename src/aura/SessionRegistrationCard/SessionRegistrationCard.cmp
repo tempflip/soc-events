@@ -3,6 +3,16 @@
 	<aura:registerEvent name="registrationDelete" type="c:Attendee_Registration_DeleteEVT"/>
 
 	<lightning:card title="{!v.session.sessionName}" iconName="standard:account">
+		
+		<aura:if isTrue="{!v.session.recordId != null}">
+			I'm a saved record.
+			<aura:set attribute="else">
+				I'm not saved yet!
+			</aura:set>
+		</aura:if>
+		
+		<br/>
+
 		Start: 
 
 		<lightning:formattedDateTime value="{!v.session.sessionStart}" year="numeric" month="numeric" day="numeric"  hour="2-digit" minute="2-digit" timeZoneName="short" />

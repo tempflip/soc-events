@@ -20,8 +20,8 @@
 		var action = cmp.get('c.registerAttendeeToSession');
 
 		action.setParams({
-			'attendeeId' : cmp.get('v.recordId'),
-			'sessionId' : cmp.get('v.sessionId')
+			'sessionId' : cmp.get('v.sessionId'),
+			'attendeeJSON' : JSON.stringify(cmp.get('v.attendee'))
 		});
 
 		action.setCallback(this, function(res) {
@@ -29,17 +29,16 @@
 				console.log('### error: ',res.getError());
 				return;
 			}
-			this.attendeeRegisteredSuccess(cmp);
+			this.setAttendee(cmp, res.getReturnValue());
 		});
 
 		$A.enqueueAction(action);
 	},
 
-	deleteRegistration : function(cmp, sessionRegistrationId) {
-		var action = cmp.get('c.deleteRegistration');
-
+	saveAttendee : function(cmp) {
+		var action = cmp.get('c.saveAttendee');
 		action.setParams({
-			'sessionRegistrationId' : sessionRegistrationId
+			'attendeeJSON' : JSON.stringify(cmp.get('v.attendee'))
 		});
 
 		action.setCallback(this, function(res) {
@@ -47,19 +46,35 @@
 				console.log('### error: ',res.getError());
 				return;
 			}
-			this.deleteRegistrationSuccess(cmp);
+			
+			this.setAttendee(cmp, res.getReturnValue());
 		});
 
 		$A.enqueueAction(action);
+	},
+
+
+	deleteRegistration : function(cmp, sessionRegistrationId) {
+		// var action = cmp.get('c.deleteRegistration');
+
+		// action.setParams({
+		// 	'sessionRegistrationId' : sessionRegistrationId
+		// });
+
+		// action.setCallback(this, function(res) {
+		// 	if (res.getState() != 'SUCCESS') {
+		// 		console.log('### error: ',res.getError());
+		// 		return;
+		// 	}
+		// 	this.deleteRegistrationSuccess(cmp);
+		// });
+
+		// $A.enqueueAction(action);
 	},
 
 	setAttendee : function(cmp, att) {
-		console.log(att);
+		console.log('## im the current state: ', att);
 		cmp.set('v.attendee', att);
-	},
-
-	attendeeRegisteredSuccess : function(cmp) {
-		this.getAttendee(cmp);
 	},
 
 	deleteRegistrationSuccess : function(cmp) {

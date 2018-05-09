@@ -17,13 +17,14 @@
 		/>
 
 	<lightning:button variant="brand" label="Register" onclick="{!c.onRegisterClick}" />
+	<lightning:button variant="brand" label="Save" onclick="{!c.onSaveClick}" />
 
 	<p/>
 
 	First Name : {!v.attendee.firstName} <br/>
 	Last Name : {!v.attendee.lastName} <br/>
 	
-	{!v.sessionId}
+	=------------ {!v.sessionId} ------------
 
 	<aura:iteration items="{!v.attendee.sessionRegistrationList}" var="sr">
 

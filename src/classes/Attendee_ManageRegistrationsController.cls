@@ -18,12 +18,30 @@ public with sharing class Attendee_ManageRegistrationsController {
 	}
 
 	@AuraEnabled
-	public static void registerAttendeeToSession(Id attendeeId
+	public static Attendee registerAttendeeToSession(String attendeeJSON
 												, Id sessionId) {
-		AttendeeService.registerAttendeeForSession(new Map<Id, Id[]>
-												{
-													attendeeId => new Id[]{sessionId}
-												});
+
+		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
+
+		Session__c sessRecord = SessionSelector.getSessionsById(new Set<Id>{sessionId})[0];
+		Session sess = new Session(sessRecord);
+		att.registerForSession(sess);
+		return att;
+	}
+
+	@AuraEnabled
+	public static Attendee saveAttendee(String attendeeJSON) {
+
+		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});		
+		Attendee att = (Attendee) JSON.deserialize(attendeeJSON, Attendee.class);
+
+		//system.assert(false, att) ;	
+
+		att.uow = uow;
+		att.upsertSessionRegistrationRecords();
+		uow.commitWork();
+		
+		return getAttendee(att.recordId);
 	}
 
 	@AuraEnabled

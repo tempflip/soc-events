@@ -1,8 +1,10 @@
 public with sharing class SessionRegistration {
 	
 	public SObjectUnitOfWork uow;
-	@AuraEnabled public Session_Registration__c record;
+	public Session_Registration__c record;
+	@AuraEnabled public Id recordId;
 	@AuraEnabled public String sessionName;
+	@AuraEnabled public Id sessionId;
 	@AuraEnabled public DateTime sessionStart;
 	@AuraEnabled public DateTime sessionEnd;
 	public Session sess;
@@ -15,20 +17,34 @@ public with sharing class SessionRegistration {
 	public SessionRegistration(Session sess, Attendee att) {
 		this.sess = sess;
 		this.att = att;
+		this.sessionId = sess.recordId;
+		this.sessionName = sess.name;
+		this.sessionStart = sess.startTime;
+		this.sessionEnd = sess.endTime;
 	}
 
 	public void buildFromRecord(Session_Registration__c sr) {
 		this.record = sr;
+		this.recordId = sr.Id;
 		this.sessionName = sr.Session__r.Name;
+		this.sessionId = sr.Session__c;		
 		this.sessionStart = sr.Session__r.Start__c;
 		this.sessionEnd = sr.Session__r.End__c;
 	}
 
 	public void upsertRecord() {
-		if (this.record == null) this.record = new Session_Registration__c();
+		if (this.record == null) this.record = new Session_Registration__c(Id = this.recordId);
 		
-		if (this.att != null) this.record.Attendee__c = this.att.record.Id;
-		if (this.sess != null) this.record.Session__c = this.sess.record.Id;
+		if (this.recordId == null) {
+			// master lookups writeable only when creating a new record
+			if (this.att != null) this.record.Attendee__c = this.att.recordId;
+			if (this.sess != null) {
+				this.record.Session__c = this.sess.recordId;
+			} else if (this.sessionId != null) {
+				this.record.Session__c = this.sessionId;
+			}
+		}
+
 		this.uow.registerDirty(this.record);
 	}
 

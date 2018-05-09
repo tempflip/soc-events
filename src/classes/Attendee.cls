@@ -4,6 +4,7 @@ public with sharing class Attendee {
 
 	public SObjectUnitOfWork uow;
 	public Attendee__c record;
+	@AuraEnabled public Id recordId;
 	@AuraEnabled public SessionRegistration[] sessionRegistrationList;
 	@AuraEnabled public String firstName;
 	@AuraEnabled public String lastName;
@@ -15,6 +16,7 @@ public with sharing class Attendee {
 
 	private void buildFromRecord(Attendee__c att) {
 		this.record = att;
+		this.recordId = att.Id;
 		this.firstName = att.First_Name__c;
 		this.lastName = att.Last_Name__c;
 		this.eventId = att.Event__c;
@@ -61,6 +63,7 @@ public with sharing class Attendee {
 	public void upsertSessionRegistrationRecords() {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
 			sr.uow = this.uow;
+			if (sr.att == null) sr.att = this;
 			sr.upsertRecord();
 		}
 	}
