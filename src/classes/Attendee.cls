@@ -14,19 +14,6 @@ public with sharing class Attendee {
 		this.buildFromRecord(att);
 	}
 
-	private void buildFromRecord(Attendee__c att) {
-		this.record = att;
-		this.recordId = att.Id;
-		this.firstName = att.First_Name__c;
-		this.lastName = att.Last_Name__c;
-		this.eventId = att.Event__c;
-		
-		this.sessionRegistrationList = new SessionRegistration[]{};
-		for (Session_Registration__c sr : att.Session_Registrations__r) {
-			this.sessionRegistrationList.add(new SessionRegistration(sr));
-		}
-	}
-
 	public void registerForSession(Session sess) {
 		this.validateSessionRegistration(sess);
 		this.sessionRegistrationList.add(new SessionRegistration(sess, this));
@@ -41,14 +28,35 @@ public with sharing class Attendee {
 		}			
 	}
 
-	public Boolean ifSessionAlreadyRegistered(Session sess) {
+	public void upsertSessionRegistrationRecords() {
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			sr.uow = this.uow;
+			if (sr.att == null) sr.att = this;
+			sr.upsertRecord();
+		}
+	}
+
+	private void buildFromRecord(Attendee__c att) {
+		this.record = att;
+		this.recordId = att.Id;
+		this.firstName = att.First_Name__c;
+		this.lastName = att.Last_Name__c;
+		this.eventId = att.Event__c;
+		
+		this.sessionRegistrationList = new SessionRegistration[]{};
+		for (Session_Registration__c sr : att.Session_Registrations__r) {
+			this.sessionRegistrationList.add(new SessionRegistration(sr));
+		}
+	}	
+
+	private Boolean ifSessionAlreadyRegistered(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
 			if (sr.record.Session__c == sess.record.Id) return true;
 		}
 		return false;
 	}
 
-	public SessionRegistration ifSessionOverlaps(Session sess) {
+	private SessionRegistration ifSessionOverlaps(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
 			if (	(sess.startTime <= sr.sessionStart && sess.endTime > sr.sessionStart) 
 				|| (sess.startTime < sr.sessionEnd && sess.endTime >= sr.sessionEnd)
@@ -59,12 +67,4 @@ public with sharing class Attendee {
 		}
 		return null;
 	}	
-
-	public void upsertSessionRegistrationRecords() {
-		for (SessionRegistration sr : this.sessionRegistrationList) {
-			sr.uow = this.uow;
-			if (sr.att == null) sr.att = this;
-			sr.upsertRecord();
-		}
-	}
 }
