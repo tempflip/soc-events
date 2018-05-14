@@ -1,0 +1,6 @@
+project:
+    name: soc-events
+    package:
+        name: soc-events
+        namespace: soc-events
+        api_version: 37.0
