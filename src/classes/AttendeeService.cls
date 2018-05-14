@@ -98,6 +98,17 @@ public with sharing class AttendeeService {
 	}
 
 	/*
+	* Saves the passed Attendee instrance to the database
+	*/
+	public static void saveAttendee(Attendee attendee) {
+
+		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});				
+		attendee.uow = uow;
+		attendee.upsertSessionRegistrationRecords();
+		uow.commitWork();
+	}
+
+	/*
 	* Returns the Session Registrations from the Database which you don't have on the passed Attendee
 	* Handy when you want to delete registrations
 	*/

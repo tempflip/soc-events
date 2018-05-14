@@ -20,11 +20,7 @@ public with sharing class Attendee_ManageSessionRegistrationsCTRL {
 	}
 
 	public PageReference saveRegistrations() {
-
-		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});				
-		this.attendee.uow = uow;
-		this.attendee.upsertSessionRegistrationRecords();
-		uow.commitWork();
+		AttendeeService.saveAttendee(this.attendee);
 
 		PageReference pr = new PageReference('/' + this.attendee.recordId);
 		pr.setRedirect(true);
