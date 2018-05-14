@@ -3,10 +3,10 @@ public with sharing class SessionRegistration {
 	public SObjectUnitOfWork uow;
 	public Session_Registration__c record;
 	@AuraEnabled public Id recordId;
-	@AuraEnabled public String sessionName;
-	@AuraEnabled public Id sessionId;
-	@AuraEnabled public DateTime sessionStart;
-	@AuraEnabled public DateTime sessionEnd;
+	@AuraEnabled public String sessionName {get; set;}
+	@AuraEnabled public Id sessionId {get; set;}
+	@AuraEnabled public DateTime sessionStart {get; set;}
+	@AuraEnabled public DateTime sessionEnd {get; set;}
 	public Session sess;
 	public Attendee att;
 

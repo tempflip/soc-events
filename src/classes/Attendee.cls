@@ -5,9 +5,9 @@ public with sharing class Attendee {
 	public SObjectUnitOfWork uow;
 	public Attendee__c record;
 	@AuraEnabled public Id recordId;
-	@AuraEnabled public SessionRegistration[] sessionRegistrationList;
-	@AuraEnabled public String firstName;
-	@AuraEnabled public String lastName;
+	@AuraEnabled public SessionRegistration[] sessionRegistrationList {get; set;}
+	@AuraEnabled public String firstName {get; set;}
+	@AuraEnabled public String lastName {get; set;}
 	@AuraEnabled public Id eventId;
 
 	public Attendee(Attendee__c att) {

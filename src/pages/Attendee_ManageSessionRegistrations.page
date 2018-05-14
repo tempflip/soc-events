@@ -1,0 +1,41 @@
+<apex:page showHeader="true" sidebar="true" standardController="Attendee__c" extensions="Attendee_ManageSessionRegistrationsCTRL">
+	
+	<apex:sectionHeader title="{!attendee.firstName + ' ' + attendee.lastName}" subtitle="Manage Registrations"/>
+
+
+
+	<apex:form>
+		<apex:selectList id="sessionSelector" value="{!selectedSessionId}" size="1">
+			<apex:selectOptions value="{!sessionOptions}"/>
+
+		</apex:selectList>
+
+		<apex:commandButton value="Register" action="{!registerForSession}" />
+		<apex:commandButton value="Save" action="{!saveRegistrations}" />
+
+
+
+		<apex:dataTable value="{!attendee.sessionRegistrationList}" var="reg">
+
+			<apex:column>
+				<apex:facet name="header">Session Name</apex:facet>
+				{!reg.sessionName}
+
+			</apex:column>
+
+			<apex:column>
+				<apex:facet name="header">Start</apex:facet>
+				{!reg.sessionStart}
+				
+			</apex:column>
+
+			<apex:column>
+				<apex:facet name="header">End</apex:facet>
+				{!reg.sessionEnd}
+
+			</apex:column>
+
+		</apex:dataTable>
+
+	</apex:form>
+</apex:page>
