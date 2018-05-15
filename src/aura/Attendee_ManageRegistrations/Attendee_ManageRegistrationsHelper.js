@@ -29,6 +29,7 @@
 				this.showError(cmp, res.getError()[0].message);
 				return;
 			}
+			this.setSynced(cmp, false);
 			this.setAttendee(cmp, res.getReturnValue());
 		});
 
@@ -46,7 +47,7 @@
 				console.log('### error: ',res.getError());
 				return;
 			}
-
+			this.setSynced(cmp, true);
 			this.setAttendee(cmp, res.getReturnValue());
 		});
 
@@ -61,22 +62,8 @@
 		});
 
 		cmp.set('v.attendee', attendee);
+		this.setSynced(cmp, false);
 
-		// var action = cmp.get('c.deleteRegistration');
-
-		// action.setParams({
-		// 	'sessionRegistrationId' : sessionRegistrationId
-		// });
-
-		// action.setCallback(this, function(res) {
-		// 	if (res.getState() != 'SUCCESS') {
-		// 		console.log('### error: ',res.getError());
-		// 		return;
-		// 	}
-		// 	this.deleteRegistrationSuccess(cmp);
-		// });
-
-		// $A.enqueueAction(action);
 	},
 
 	showError : function(cmp, message) {
@@ -90,5 +77,9 @@
 
 	deleteRegistrationSuccess : function(cmp) {
 		this.getAttendee(cmp);
+	},
+
+	setSynced : function(cmp, synced) {
+		cmp.set('v.synced', synced);
 	}
 })

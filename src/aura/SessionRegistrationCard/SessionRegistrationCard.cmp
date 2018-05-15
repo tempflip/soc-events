@@ -3,25 +3,19 @@
 	<aura:registerEvent name="registrationDelete" type="c:Attendee_Registration_DeleteEVT"/>
 
 	<lightning:card title="{!v.session.sessionName}" iconName="standard:account">
-		<aura:if isTrue="{!v.session.recordId != null}">
-			I'm a saved record.
-			<aura:set attribute="else">
-				I'm not saved yet!
-			</aura:set>
-		</aura:if>
-		
-		<br/>
 
-		Start: 
+		{!v.session.sessionStartLabel} - {!v.session.sessionEndLabel}
 
-		<lightning:formattedDateTime value="{!v.session.sessionStart}" year="numeric" month="numeric" day="numeric"  hour="2-digit" minute="2-digit" timeZoneName="short" />
-
-		<br/>
-		End:
-
-		<lightning:formattedDateTime value="{!v.session.sessionEnd}" year="numeric" month="numeric" day="numeric"  hour="2-digit" minute="2-digit" timeZoneName="short" />
+		<p/>
 
 		<lightning:button label="Delete" onclick="{!c.onDeleteClick}" />
+
+		<p/>
+
+		<aura:if isTrue="{!v.session.recordId == null}">
+			NOT SAVED REGISTRATION
+		</aura:if>
+
 
 	</lightning:card>
 

@@ -10,7 +10,7 @@
 		<option value="" text="--Select a Session--"></option>
 
 		<aura:iteration items="{!v.sessions}" var="s">
-			<option value="{!s.recordId}" text="{!s.name}"></option>
+			<option value="{!s.recordId}" text="{!s.label}"></option>
 		</aura:iteration>
 	
 	</lightning:select>

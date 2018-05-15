@@ -6,6 +6,7 @@
 	<aura:attribute name="sObjectName" type="String"/>
 	<aura:attribute name="attendee" type="Object" access="private" />
 	<aura:attribute name="sessionId" type="Id" access="public" />
+	<aura:attribute name="synced" type="Boolean" default="true" access="private" />
 
 
 
@@ -17,7 +18,7 @@
 		/>
 
 	<lightning:button variant="brand" label="Register" onclick="{!c.onRegisterClick}" />
-	<lightning:button variant="brand" label="Save" onclick="{!c.onSaveClick}" />
+	<lightning:button variant="brand" label="Save" onclick="{!c.onSaveClick}" disabled="{! v.synced}"/>
 
 	<p/>
 
