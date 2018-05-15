@@ -1,5 +1,5 @@
 <aura:component
-	implements="force:appHostable,flexipage:availableForAllPageTypes"
+	implements="force:appHostable,force:hasRecordId, flexipage:availableForAllPageTypes"
 	controller="Attendee_ManageRegistrationsController">
 
 	<aura:attribute name="recordId" type="String"/>
