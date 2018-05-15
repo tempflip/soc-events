@@ -106,6 +106,9 @@ public with sharing class AttendeeService {
 		attendee.uow = uow;
 		attendee.upsertSessionRegistrationRecords();
 		uow.commitWork();
+
+		Session_Registration__c[] srToDelete = diffSessionRegistrations(attendee, attendee.recordId);
+		delete srToDelete;		
 	}
 
 	/*

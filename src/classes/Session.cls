@@ -4,6 +4,11 @@ public with sharing class Session {
 	@AuraEnabled public String name;
 	@AuraEnabled public DateTime startTime;
 	@AuraEnabled public DateTime endTime;
+	@AuraEnabled public String label { 
+		get {
+			return this.name + ' ' + this.startTime.format('MM/dd hh:mm') + ' - ' + this.endTime.format('hh:mm');
+		} set;
+	}
 
 	public Session(Session__c sess) {
 		this.buildFromRecord(sess);
@@ -16,4 +21,5 @@ public with sharing class Session {
 		this.startTime = sess.Start__c;
 		this.endTime = sess.End__c;
 	}
+
 }

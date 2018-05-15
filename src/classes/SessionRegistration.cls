@@ -2,11 +2,21 @@ public with sharing class SessionRegistration {
 	
 	public SObjectUnitOfWork uow;
 	public Session_Registration__c record;
-	@AuraEnabled public Id recordId;
+	@AuraEnabled public Id recordId {get; set;}
 	@AuraEnabled public String sessionName {get; set;}
 	@AuraEnabled public Id sessionId {get; set;}
 	@AuraEnabled public DateTime sessionStart {get; set;}
 	@AuraEnabled public DateTime sessionEnd {get; set;}
+
+	@AuraEnabled public String sessionStartLabel {
+		get {
+			return this.sessionStart.format('MM/dd hh:mm');
+		} set;}
+	@AuraEnabled public String sessionEndLabel {
+		get {
+			return this.sessionEnd.format('MM/dd hh:mm');
+		} set;}
+
 	public Session sess;
 	public Attendee att;
 

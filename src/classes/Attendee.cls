@@ -66,5 +66,13 @@ public with sharing class Attendee {
 			}
 		}
 		return null;
-	}	
+	}
+
+	public void removeSessionRegistrationById(Id sessionId) {
+		SessionRegistration[] sessionRegistrationListFiltered = new SessionRegistration[]{};
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			if (sr.sessionId != sessionId) sessionRegistrationListFiltered.add(sr);
+		}
+		this.sessionRegistrationList = sessionRegistrationListFiltered;
+	}
 }

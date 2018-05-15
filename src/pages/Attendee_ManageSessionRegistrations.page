@@ -1,41 +1,75 @@
 <apex:page showHeader="true" sidebar="true" standardController="Attendee__c" extensions="Attendee_ManageSessionRegistrationsCTRL">
+
+	<style type="text/css">
+		
+		.regTable {
+			margin-top: 40px;
+		}
+
+		.regTable td, th {
+   			border: 1px solid black;
+   			padding: 5px;
+		}
+
+		.regtable th {
+			font-weight: bold;
+		}
+
+		.newLine {
+			background: #98FB98;
+		}
+
+	</style>
 	
+	<apex:pageMessages></apex:pageMessages>
+
 	<apex:sectionHeader title="{!attendee.firstName + ' ' + attendee.lastName}" subtitle="Manage Registrations"/>
 
+	<apex:form id="main">
 
 
-	<apex:form>
 		<apex:selectList id="sessionSelector" value="{!selectedSessionId}" size="1">
 			<apex:selectOptions value="{!sessionOptions}"/>
 
 		</apex:selectList>
 
+		<p/>
+
 		<apex:commandButton value="Register" action="{!registerForSession}" />
-		<apex:commandButton value="Save" action="{!saveRegistrations}" />
+		<apex:commandButton value="Save" action="{!saveRegistrations}" disabled="{!saveDisabled}"/>
 
 
 
-		<apex:dataTable value="{!attendee.sessionRegistrationList}" var="reg">
+		<table class="regTable">
+			<tr>
+				<th>Session Name</th>
+				<th>Start</th>
+				<th>End</th>
+			</tr>
 
-			<apex:column>
-				<apex:facet name="header">Session Name</apex:facet>
-				{!reg.sessionName}
+			<apex:repeat value="{!attendee.sessionRegistrationList}" var="reg">
+				<tr class="{!IF(reg.recordId == null, 'newLine', '')}">
 
-			</apex:column>
+					<td>
+						{!reg.sessionName}
+					</td>
 
-			<apex:column>
-				<apex:facet name="header">Start</apex:facet>
-				{!reg.sessionStart}
-				
-			</apex:column>
+					<td>
+						{!reg.sessionStartLabel}
+					</td>
 
-			<apex:column>
-				<apex:facet name="header">End</apex:facet>
-				{!reg.sessionEnd}
+					<td>
+						{!reg.sessionEndLabel}
+					</td>
 
-			</apex:column>
-
-		</apex:dataTable>
+					<td>
+						<apex:commandButton value="Delete" action="{!deleteRegistration}" reRender="main">
+							<apex:param name="regToDelete" value="{!reg.sessionId}" assignTo="{!regToDelete}" />
+						</apex:commandButton>
+					</td>
+				</tr>
+			</apex:repeat>
+		</table>
 
 	</apex:form>
 </apex:page>
