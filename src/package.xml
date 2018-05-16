@@ -10,6 +10,7 @@
 		<members>SessionRegistration</members>
 		<members>SessionSelector</members>
 		<members>Attendee_ManageSessionRegistrationsCTRL</members>
+		<members>Helpers</members>
 		<name>ApexClass</name>
 	</types>
 	<types>

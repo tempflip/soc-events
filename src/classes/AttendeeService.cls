@@ -5,42 +5,42 @@ public with sharing class AttendeeService {
 	* Params:
 	* Session Id lists mapped to Attendee id's
 	*/
-	public static void registerAttendeeForSession(Map<Id, Id[]> sessionsByAttendee) {
+	//public static void registerAttendeeForSession(Map<Id, Id[]> sessionsByAttendee) {
 		
-		// getting the data from the database
-		//////////////////////////
-		Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(sessionsByAttendee.keySet());
-		Set<Id> sessionIdSet = new Set<Id>();
+	//	// getting the data from the database
+	//	//////////////////////////
+	//	Attendee__c[] attList = AttendeeSelector.getAttendeeWithSessionRegistrations(sessionsByAttendee.keySet());
+	//	Set<Id> sessionIdSet = new Set<Id>();
 
-		for (Attendee__c attRecord : attList) {
-			for (Session_Registration__c sr : attRecord.Session_Registrations__r) {
-				sessionIdSet.add(sr.Session__c);
-			}
-		}
-		for (Id attId : sessionsByAttendee.keySet()) {
-			sessionIdSet.addAll(sessionsByAttendee.get(attId));
-		}
+	//	for (Attendee__c attRecord : attList) {
+	//		for (Session_Registration__c sr : attRecord.Session_Registrations__r) {
+	//			sessionIdSet.add(sr.Session__c);
+	//		}
+	//	}
+	//	for (Id attId : sessionsByAttendee.keySet()) {
+	//		sessionIdSet.addAll(sessionsByAttendee.get(attId));
+	//	}
 
-		Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
+	//	Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessionIdSet));
 
-		// making the operations on domain layer instances
-		//////////////////////
-		SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});
+	//	// making the operations on domain layer instances
+	//	//////////////////////
+	//	SObjectUnitOfWork uow = new SObjectUnitOfWork(new Schema.SObjectType[]{Session_Registration__c.SObjectType});
 
-		for (Attendee__c attRecord : attList) {
-			Attendee att = new Attendee(attRecord);
-			att.uow = uow;
-			for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
-				Session sess = new Session(sessionMap.get(sessionId));
-				att.registerForSession(sess);
-			}
-			att.upsertSessionRegistrationRecords();
-		}
+	//	for (Attendee__c attRecord : attList) {
+	//		Attendee att = new Attendee(attRecord);
+	//		att.uow = uow;
+	//		for (Id sessionId : sessionsByAttendee.get(attRecord.Id)) {
+	//			Session sess = new Session(sessionMap.get(sessionId));
+	//			att.registerForSession(sess);
+	//		}
+	//		att.upsertSessionRegistrationRecords();
+	//	}
 
-		// database commit
-		//////////////////
-		uow.commitWork();
-	}
+	//	// database commit
+	//	//////////////////
+	//	uow.commitWork();
+	//}
 
 	/*
 	* Validates if a Session Registration record is valid.
@@ -49,17 +49,8 @@ public with sharing class AttendeeService {
 	public static void validateSessionRegistration(Session_Registration__c[] srList) {
 		// getting the data from the database
 		//////////////////////////
-		Set<Id> attIdSet = new Set<Id>();
-		Set<Id> sessIdSet = new Set<Id>();
-
-		for (Session_Registration__c sr : srList) {
-			if (sr.Attendee__c != null) {
-				attIdSet.add(sr.Attendee__c);
-			}
-			if (sr.Session__c != null) {
-				sessIdSet.add(sr.Session__c);
-			}		
-		}
+		Set<Id> attIdSet = Helpers.getIdSet(srList, Session_Registration__c.Attendee__c);
+		Set<Id> sessIdSet = Helpers.getIdSet(srList, Session_Registration__c.Session__c);
 
 		Map<Id, Session__c> sessionMap = new Map<Id, Session__c>(SessionSelector.getSessionsById(sessIdSet));
 		Map<Id, Attendee__c> attendeeMap = new Map<Id, Attendee__c>(AttendeeSelector.getAttendeeWithSessionRegistrations(attIdSet));
@@ -131,7 +122,6 @@ public with sharing class AttendeeService {
 				srNotExisting.add(srDb.record);
 			}
 		}
-
 
 		return srNotExisting;
 	}
