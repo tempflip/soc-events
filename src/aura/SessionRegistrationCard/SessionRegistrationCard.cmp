@@ -2,17 +2,17 @@
 	<aura:attribute name="session" type="Object" access="public" />
 	<aura:registerEvent name="registrationDelete" type="c:Attendee_Registration_DeleteEVT"/>
 
-	<lightning:card title="{!v.session.sessionName}" iconName="standard:account">
+	<lightning:card title="{!v.session.sessionName}" iconName="standard:event">
 
-		{!v.session.sessionStartLabel} - {!v.session.sessionEndLabel}
+        <aura:set attribute="actions">
+			<lightning:button label="Delete" onclick="{!c.onDeleteClick}" />
+        </aura:set>
 
-		<p/>
+		{!v.session.label}
 
-		<lightning:button label="Delete" onclick="{!c.onDeleteClick}" />
-
-		<p/>
 
 		<aura:if isTrue="{!v.session.recordId == null}">
+			<p/>
 			NOT SAVED REGISTRATION
 		</aura:if>
 

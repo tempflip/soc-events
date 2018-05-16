@@ -7,6 +7,10 @@ public with sharing class SessionRegistration {
 	@AuraEnabled public Id sessionId {get; set;}
 	@AuraEnabled public DateTime sessionStart {get; set;}
 	@AuraEnabled public DateTime sessionEnd {get; set;}
+	@AuraEnabled public String label {get {
+			return this.sessionStart.format('MM/dd hh:mm') + ' - ' + this.sessionEnd.format('hh:mm');
+		} set;
+	}
 
 	@AuraEnabled public String sessionStartLabel {
 		get {
