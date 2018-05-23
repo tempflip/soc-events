@@ -21,7 +21,7 @@ public with sharing class Attendee {
 
 	public void validateSessionRegistration(Session sess) {
 		if (ifSessionAlreadyRegistered(sess) == true) {
-			throw new AttendeeException('This Attendee already registered for the Session: ' + sess.name);
+			throw new AttendeeException('This Attendee is already registered for the Session: ' + sess.name);
 		}
 		if (ifSessionOverlaps(sess) != null) {
 			throw new AttendeeException('This session overlaps with another: ' + ifSessionOverlaps(sess).sessionName);
@@ -51,7 +51,7 @@ public with sharing class Attendee {
 
 	private Boolean ifSessionAlreadyRegistered(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
-			if (sr.record.Session__c == sess.record.Id) return true;
+			if (sr.sessionId == sess.recordId) return true;
 		}
 		return false;
 	}
@@ -59,8 +59,8 @@ public with sharing class Attendee {
 	private SessionRegistration ifSessionOverlaps(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
 
-			if ((sess.startTime > sr.sessionStart && sess.startTime < sr.sessionEnd)
-				|| (sess.endTime > sr.sessionStart && sess.endTime < sr.sessionEnd)
+			if ((sess.startTime >= sr.sessionStart && sess.startTime < sr.sessionEnd)
+				|| (sess.endTime > sr.sessionStart && sess.endTime <= sr.sessionEnd)
 			) 
 			{
 				return sr;
