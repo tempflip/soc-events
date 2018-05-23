@@ -105,5 +105,4 @@
         <tab>Session__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
-    <userLicense>Salesforce</userLicense>
 </PermissionSet>

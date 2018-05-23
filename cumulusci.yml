@@ -3,4 +3,4 @@ project:
     package:
         name: soc-events
         namespace: soc-events
-        api_version: 37.0
+        api_version: 40.0
