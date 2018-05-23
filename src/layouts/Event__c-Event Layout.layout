@@ -55,6 +55,8 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Start__c</fields>
+        <fields>End__c</fields>
         <relatedList>Session__c.Event__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -69,7 +71,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hJ0000000yJFM</masterLabel>
+        <masterLabel>00h1F000000W6VO</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

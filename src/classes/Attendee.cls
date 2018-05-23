@@ -58,8 +58,9 @@ public with sharing class Attendee {
 
 	private SessionRegistration ifSessionOverlaps(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
-			if (	(sess.startTime <= sr.sessionStart && sess.endTime > sr.sessionStart) 
-				|| (sess.startTime < sr.sessionEnd && sess.endTime >= sr.sessionEnd)
+
+			if ((sess.startTime > sr.sessionStart && sess.startTime < sr.sessionEnd)
+				|| (sess.endTime > sr.sessionStart && sess.endTime < sr.sessionEnd)
 			) 
 			{
 				return sr;
