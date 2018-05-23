@@ -14,20 +14,47 @@ public with sharing class Attendee {
 		this.buildFromRecord(att);
 	}
 
+	/*
+	* Registers the Attendee to a given session;
+	* so creates a new sessionRegistration in the list
+	*/
 	public void registerForSession(Session sess) {
 		this.validateSessionRegistration(sess);
 		this.sessionRegistrationList.add(new SessionRegistration(sess, this));
 	}
 
+	/*
+	* Validates if an Attendee can be registered to a given session
+	*/
 	public void validateSessionRegistration(Session sess) {
 		if (ifSessionAlreadyRegistered(sess) == true) {
-			throw new AttendeeException('This Attendee is already registered for the Session: ' + sess.name);
+			throw new AttendeeException(
+				'This Attendee is already registered for the Session: ' 
+				+ sess.name
+			);
 		}
 		if (ifSessionOverlaps(sess) != null) {
-			throw new AttendeeException('This session overlaps with another: ' + ifSessionOverlaps(sess).sessionName);
+			throw new AttendeeException(
+				'This session overlaps with another: ' 
+				+ ifSessionOverlaps(sess).sessionName
+			);
 		}			
 	}
 
+	/*
+	* Removes a SessionRegistration (de-registers the Attendee)
+	*/
+	public void removeSessionRegistrationById(Id sessionId) {
+		SessionRegistration[] sessionRegistrationListFiltered = new SessionRegistration[]{};
+		for (SessionRegistration sr : this.sessionRegistrationList) {
+			if (sr.sessionId != sessionId) sessionRegistrationListFiltered.add(sr);
+		}
+		this.sessionRegistrationList = sessionRegistrationListFiltered;
+	}
+
+	/*
+	* Saves the SessionRegistration to the UOW
+	*/
 	public void upsertSessionRegistrationRecords() {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
 			sr.uow = this.uow;
@@ -36,6 +63,12 @@ public with sharing class Attendee {
 		}
 	}
 
+
+
+	// Private helpers
+	////////////////////
+	////////////////////
+	
 	private void buildFromRecord(Attendee__c att) {
 		this.record = att;
 		this.recordId = att.Id;
@@ -48,6 +81,7 @@ public with sharing class Attendee {
 			this.sessionRegistrationList.add(new SessionRegistration(sr));
 		}
 	}	
+
 
 	private Boolean ifSessionAlreadyRegistered(Session sess) {
 		for (SessionRegistration sr : this.sessionRegistrationList) {
@@ -69,11 +103,4 @@ public with sharing class Attendee {
 		return null;
 	}
 
-	public void removeSessionRegistrationById(Id sessionId) {
-		SessionRegistration[] sessionRegistrationListFiltered = new SessionRegistration[]{};
-		for (SessionRegistration sr : this.sessionRegistrationList) {
-			if (sr.sessionId != sessionId) sessionRegistrationListFiltered.add(sr);
-		}
-		this.sessionRegistrationList = sessionRegistrationListFiltered;
-	}
 }

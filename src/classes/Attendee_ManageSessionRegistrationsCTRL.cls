@@ -7,9 +7,12 @@ public with sharing class Attendee_ManageSessionRegistrationsCTRL {
 	public String regToDelete {get; set;}
 
 	public Attendee_ManageSessionRegistrationsCTRL(ApexPages.StandardController ctrl) {
-		this.attendee = new Attendee(AttendeeSelector.getAttendeeWithSessionRegistrations(new Set<Id>{ctrl.getId()})[0]);
+		this.attendee = new Attendee(
+			AttendeeSelector.getAttendeeWithSessionRegistrations(new Set<Id>{ctrl.getId()})[0]
+		);
 		
 		this.sessionOptions = new SelectOption[]{};
+		
 		for (Session__c sessRecord : SessionSelector.getSessionsByEvent(new Set<Id>{attendee.eventId})) {
 			Session sess = new Session(sessRecord);
 			this.sessionOptions.add(new SelectOption(sess.recordId, sess.label));

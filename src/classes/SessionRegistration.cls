@@ -8,7 +8,9 @@ public with sharing class SessionRegistration {
 	@AuraEnabled public DateTime sessionStart {get; set;}
 	@AuraEnabled public DateTime sessionEnd {get; set;}
 	@AuraEnabled public String label {get {
-			return this.sessionStart.format('MM/dd hh:mm') + ' - ' + this.sessionEnd.format('hh:mm');
+			return this.sessionStart.format('MM/dd hh:mm') 
+				+ ' - ' 
+				+ this.sessionEnd.format('hh:mm');
 		} set;
 	}
 
@@ -47,7 +49,9 @@ public with sharing class SessionRegistration {
 	}
 
 	public void upsertRecord() {
-		if (this.record == null) this.record = new Session_Registration__c(Id = this.recordId);
+		if (this.record == null) this.record = new Session_Registration__c(
+														Id = this.recordId
+													);
 		
 		if (this.recordId == null) {
 			// master lookups writeable only when creating a new record

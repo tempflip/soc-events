@@ -6,7 +6,11 @@ public with sharing class Session {
 	@AuraEnabled public DateTime endTime;
 	@AuraEnabled public String label { 
 		get {
-			return this.name + ' ' + this.startTime.format('MM/dd hh:mm') + ' - ' + this.endTime.format('hh:mm');
+			return this.name 
+				+ ' ' 
+				+ this.startTime.format('MM/dd hh:mm') 
+				+ ' - ' 
+				+ this.endTime.format('hh:mm');
 		} set;
 	}
 
